@@ -1,0 +1,17 @@
+itemGroup.OpenIndustry=OpenIndustry
+
+item.ReactiveCluster.name=Reactive Cluster
+item.CopperIngot.name=Copper Ingot
+item.TinIngot.name=Tin Ingot
+item.ReactiveIngot.name=Reactive Ingot
+
+item.SulfuricDust.name=Sulfuric Dust
+
+item.BasePlate.name=Base Plate
+
+tile.ReactiveOre.name=Reactive Ore
+tile.CopperOre.name=Copper Ore
+tile.TinOre.name=Tin Ore
+tile.SulfuricOre.name=Sulfuric Ore
+
+tile.MachineFrame.name=Machine Frame
