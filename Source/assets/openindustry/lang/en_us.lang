@@ -8,6 +8,7 @@ item.ReactiveIngot.name=Reactive Ingot
 item.SulfuricDust.name=Sulfuric Dust
 
 item.BasePlate.name=Base Plate
+item.ReactantFurnace_Idle.name=Reactant Furnace
 
 tile.ReactiveOre.name=Reactive Ore
 tile.CopperOre.name=Copper Ore
@@ -15,3 +16,6 @@ tile.TinOre.name=Tin Ore
 tile.SulfuricOre.name=Sulfuric Ore
 
 tile.MachineFrame.name=Machine Frame
+tile.ReactantFurnace_Idle.name=Reactant Furnace
+tile..ReactantFurnace_Active.name=Reactant Furnace
+

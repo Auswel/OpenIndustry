@@ -3,6 +3,7 @@ package net.openindustry.mod;
 import net.openindustry.mod.blocks.*;
 import net.openindustry.mod.handler.*;
 import net.openindustry.mod.items.*;
+import net.openindustry.mod.tileentity.TileEntityReactantFurnace;
 import net.openindustry.mod.worldgen.*;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
@@ -12,9 +13,11 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.Mod.EventHandler;
+import cpw.mods.fml.common.Mod.Instance;
 import cpw.mods.fml.common.event.FMLInitializationEvent;
 import cpw.mods.fml.common.event.FMLPostInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
+import cpw.mods.fml.common.network.NetworkRegistry;
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -22,11 +25,14 @@ import cpw.mods.fml.relauncher.SideOnly;
 @Mod(modid = OpenIndustry.modid, version = OpenIndustry.version)
 public class OpenIndustry {
 	public static final String modid = "OpenIndustry";
-	public static final String version = "InDev 2014.07.23_47";
+	public static final String version = "InDev 0.8.9";
 
 	OpenIndustryWorldGen eventWorldGen = new OpenIndustryWorldGen();
 
 	public static CreativeTabs openIndustryTab;
+	
+	@Instance(modid)
+	public static OpenIndustry instance;
 
 	// ITEMS
 	public static Item itemBasePlate;
@@ -44,6 +50,8 @@ public class OpenIndustry {
 
 	// MACHINES
 	public static Block machMachineFrame;
+	
+	public static final int guiIDReactantFurnace = 0;
 	public static Block machReactantFurnace_Idle;
 	public static Block machReactantFurnace_Active;
 
@@ -55,6 +63,9 @@ public class OpenIndustry {
 				return Item.getItemFromBlock(OpenIndustry.machMachineFrame);
 			}
 		};
+		
+		NetworkRegistry.INSTANCE.registerGuiHandler(this, new GuiHandler());
+		
 		//********************************************
 		// INITS
 		//********************************************
@@ -118,10 +129,14 @@ public class OpenIndustry {
 		GameRegistry.registerWorldGenerator(eventWorldGen, 0);
 		GameRegistry.registerFuelHandler(new FuelHandler());
 		//**************
+		
 	}
 
 	@EventHandler
 	public void Init(FMLInitializationEvent event) {
+		
+		GameRegistry.registerTileEntity(TileEntityReactantFurnace.class,"ReactantFurnace");
+		
 		//********************************************
 		// CRAFTING
 		//********************************************
