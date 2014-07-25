@@ -141,28 +141,20 @@ public class ReactantFurnace extends BlockContainer {
 			if (direction == 4) {
 				world.spawnParticle("smoke", (double) (x1 - f), (double) (y1),
 						(double) (z1 + f1), 0D, 0D, 0D);
-				world.spawnParticle("flame", (double) (x1 - f), (double) (y1),
-						(double) (z1 + f1), 0D, 0D, 0D);
 			}
 
 			if (direction == 5) {
 				world.spawnParticle("smoke", (double) (x1 + f), (double) (y1),
-						(double) (z1 + f1), 0D, 0D, 0D);
-				world.spawnParticle("flame", (double) (x1 + f), (double) (y1),
 						(double) (z1 + f1), 0D, 0D, 0D);
 			}
 
 			if (direction == 2) {
 				world.spawnParticle("smoke", (double) (x1 + f1), (double) (y1),
 						(double) (z1 - f), 0D, 0D, 0D);
-				world.spawnParticle("flame", (double) (x1 + f1), (double) (y1),
-						(double) (z1 - f), 0D, 0D, 0D);
 			}
 
 			if (direction == 3) {
 				world.spawnParticle("smoke", (double) (x1 + f1), (double) (y1),
-						(double) (z1 + f), 0D, 0D, 0D);
-				world.spawnParticle("flame", (double) (x1 + f1), (double) (y1),
 						(double) (z1 + f), 0D, 0D, 0D);
 			}
 		}

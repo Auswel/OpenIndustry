@@ -4,8 +4,11 @@ item.ReactiveCluster.name=Reactive Cluster
 item.CopperIngot.name=Copper Ingot
 item.TinIngot.name=Tin Ingot
 item.ReactiveIngot.name=Reactive Ingot
+item.CrystallineIngot.name=Crystalline Ingot
 
 item.SulfuricDust.name=Sulfuric Dust
+item.CrystallineCluster.name=Crystalline Cluster
+item.CrystallineShard.name=Crystalline Shard
 
 item.BasePlate.name=Base Plate
 item.ReactantFurnace_Idle.name=Reactant Furnace
@@ -17,5 +20,7 @@ tile.SulfuricOre.name=Sulfuric Ore
 
 tile.MachineFrame.name=Machine Frame
 tile.ReactantFurnace_Idle.name=Reactant Furnace
-tile..ReactantFurnace_Active.name=Reactant Furnace
+tile.ReactantFurnace_Active.name=Reactant Furnace
+tile.CrystallineLamp.name=Crystalline Lamp
+tile.MachineWall.name=Machine Wall
 

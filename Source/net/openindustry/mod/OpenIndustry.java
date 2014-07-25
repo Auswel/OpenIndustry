@@ -1,6 +1,13 @@
 package net.openindustry.mod;
 
-import net.openindustry.mod.blocks.*;
+import net.openindustry.mod.blocks.CopperOre;
+import net.openindustry.mod.blocks.CrystallineLamp;
+import net.openindustry.mod.blocks.MachineFrame;
+import net.openindustry.mod.blocks.MachineWall;
+import net.openindustry.mod.blocks.ReactantFurnace;
+import net.openindustry.mod.blocks.ReactiveOre;
+import net.openindustry.mod.blocks.SulfuricOre;
+import net.openindustry.mod.blocks.TinOre;
 import net.openindustry.mod.handler.*;
 import net.openindustry.mod.items.*;
 import net.openindustry.mod.tileentity.TileEntityReactantFurnace;
@@ -8,9 +15,11 @@ import net.openindustry.mod.worldgen.*;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.creativetab.CreativeTabs;
+import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraftforge.common.MinecraftForge;
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.Mod.EventHandler;
 import cpw.mods.fml.common.Mod.Instance;
@@ -22,10 +31,24 @@ import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
+/* My To-do list:
+ *   - Copper/Tin/Bronze Tools
+ *   - Crystalline Shard
+ *     - Found by breaking grass, rare
+ *     - 9 in crafting grid makes Crystalline Cluster
+ *       - Smelt for Crystalline Ingot
+ *         - Crystalline Tools & Armor
+ *         - Crystalline Boots have Feather Falling
+ *   - Reactive Tools
+ *     - Reactive tools should have a 1/20 chance of auto-smelting an ore
+ *   - Ore Grinder
+ *     - Uses Reactive Clusters/Reactive Ingots to double ores
+ */
+
 @Mod(modid = OpenIndustry.modid, version = OpenIndustry.version)
 public class OpenIndustry {
 	public static final String modid = "OpenIndustry";
-	public static final String version = "InDev 0.9.1";
+	public static final String version = "InDev 0.9.5";
 
 	OpenIndustryWorldGen eventWorldGen = new OpenIndustryWorldGen();
 
@@ -40,7 +63,10 @@ public class OpenIndustry {
 	public static Item itemReactiveIngot;
 	public static Item itemCopperIngot;
 	public static Item itemTinIngot;
+	public static Item itemCrystallineIngot;
 	public static Item itemSulfuricDust;
+	public static Item itemCrystallineShard;
+	public static Item itemCrystallineCluster;
 
 	// ORES
 	public static Block oreReactiveOre;
@@ -54,6 +80,10 @@ public class OpenIndustry {
 	public static final int guiIDReactantFurnace = 0;
 	public static Block machReactantFurnace_Idle;
 	public static Block machReactantFurnace_Active;
+	public static Block machCrystallineLamp;
+
+	// BLOCKS
+	public static Block blockMachineWall;
 
 	@EventHandler
 	public void PreInit(FMLPreInitializationEvent preEvent) {
@@ -81,6 +111,12 @@ public class OpenIndustry {
 		itemTinIngot = new OpenIndustryItems().setUnlocalizedName("TinIngot");
 		itemSulfuricDust = new OpenIndustryItems()
 				.setUnlocalizedName("SulfuricDust");
+		itemCrystallineShard = new OpenIndustryItems()
+				.setUnlocalizedName("CrystallineShard");
+		itemCrystallineIngot = new OpenIndustryItems()
+				.setUnlocalizedName("CrystallineIngot");
+		itemCrystallineCluster = new OpenIndustryItems()
+				.setUnlocalizedName("CrystallineCluster");
 		// **************
 		// ORES
 		// **************
@@ -99,6 +135,13 @@ public class OpenIndustry {
 				"ReactantFurnace_Idle").setCreativeTab(openIndustryTab);
 		machReactantFurnace_Active = new ReactantFurnace(true).setBlockName(
 				"ReactantFurnace_Active").setLightLevel(0.575f);
+		machCrystallineLamp = new CrystallineLamp()
+				.setBlockName("CrystallineLamp");
+		// **************
+		// BLOCKS
+		// **************
+		blockMachineWall = new MachineWall().setBlockName("MachineWall");
+
 		// ********************************************
 		// REGISTRY
 		// ********************************************
@@ -109,6 +152,7 @@ public class OpenIndustry {
 				"ReactantFurnace_Idle");
 		GameRegistry.registerBlock(machReactantFurnace_Active,
 				"ReactantFurnace_Active");
+		GameRegistry.registerBlock(machCrystallineLamp, "CrystallineLamp");
 
 		// **************
 		// ITEMS
@@ -118,7 +162,10 @@ public class OpenIndustry {
 		GameRegistry.registerItem(itemReactiveIngot, "ReactiveIngot");
 		GameRegistry.registerItem(itemCopperIngot, "CopperIngot");
 		GameRegistry.registerItem(itemTinIngot, "TinIngot");
+		GameRegistry.registerItem(itemCrystallineIngot, "CrystallineIngot");
 		GameRegistry.registerItem(itemSulfuricDust, "SulfuricDust");
+		GameRegistry.registerItem(itemCrystallineShard, "CrystallineShard");
+		GameRegistry.registerItem(itemCrystallineCluster, "CrystallineCluster");
 
 		// **************
 		// ORES
@@ -129,11 +176,18 @@ public class OpenIndustry {
 		GameRegistry.registerBlock(oreSulfuricOre, "SulfuricOre");
 
 		// **************
+		// BLOCKS
+		// **************
+		GameRegistry.registerBlock(blockMachineWall, "MachineWall");
+
+		// **************
 		// GAME MODIFIERS
 		// **************
 		GameRegistry.registerWorldGenerator(eventWorldGen, 0);
 		GameRegistry.registerFuelHandler(new FuelHandler());
 		// **************
+
+		MinecraftForge.addGrassSeed(new ItemStack(itemCrystallineShard), 1);
 
 	}
 
@@ -146,22 +200,42 @@ public class OpenIndustry {
 		// ********************************************
 		// CRAFTING
 		// ********************************************
-		// BASE PLATE
+		// Base Plate
 		// **************
 		GameRegistry.addRecipe(new ItemStack(itemBasePlate, 2), new Object[] {
 				"III", "I I", "III", 'I', Items.iron_ingot });
 		// **************
-		// MACHINE FRAME
+		// Machine Frame
 		// **************
 		GameRegistry.addRecipe(new ItemStack(machMachineFrame),
 				new Object[] { "PPP", "PIP", "PPP", 'P', itemBasePlate, 'I',
 						Items.iron_ingot });
+		GameRegistry.addRecipe(new ItemStack(machMachineFrame), new Object[] {
+				"WWW", "W W", "WWW", 'W', blockMachineWall });
 		// **************
-		// REACTANT FURNACE
+		// Reactant Furnace
 		// **************
 		GameRegistry.addRecipe(new ItemStack(machReactantFurnace_Idle),
 				new Object[] { "PRP", "PMP", "RRR", 'P', itemBasePlate, 'R',
 						itemReactiveIngot, 'M', machMachineFrame });
+		// **************
+		// Crystalline Cluster
+		// **************
+		GameRegistry.addRecipe(new ItemStack(itemCrystallineCluster),
+				new Object[] { "SSS", "SRS", "SSS", 'S', itemCrystallineShard,
+						'R', itemReactiveCluster });
+		// **************
+		// Crystalline Lamp
+		// **************
+		GameRegistry.addRecipe(new ItemStack(machCrystallineLamp),
+				new Object[] { "GSG", "GPG", "CST", 'S', itemCrystallineShard,
+						'G', Blocks.glass, 'C', itemCopperIngot, 'T',
+						itemTinIngot, 'P', machMachineFrame });
+		// **************
+		// Machine Wall
+		// **************
+		GameRegistry.addShapelessRecipe(new ItemStack(blockMachineWall, 8),
+				new ItemStack(machMachineFrame));
 
 		// ********************************************
 		// SMELTERY
@@ -173,7 +247,8 @@ public class OpenIndustry {
 		// **************
 		// ReactiveCluster --> ReactiveIngot
 		// **************
-		GameRegistry.addSmelting(itemReactiveCluster, new ItemStack(itemReactiveIngot), 25);
+		GameRegistry.addSmelting(itemReactiveCluster, new ItemStack(
+				itemReactiveIngot), 25);
 		// **************
 		// **************
 		// CopperOre --> CopperIngot
@@ -185,6 +260,10 @@ public class OpenIndustry {
 		// **************
 		GameRegistry.addSmelting(oreTinOre, new ItemStack(itemTinIngot), 15);
 		// **************
+		// CrystallineCluster --> CrystallineIngot
+		// **************
+		GameRegistry.addSmelting(itemCrystallineCluster, new ItemStack(
+				itemCrystallineIngot), 15);
 	}
 
 	@EventHandler
