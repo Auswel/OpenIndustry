@@ -25,7 +25,7 @@ import cpw.mods.fml.relauncher.SideOnly;
 @Mod(modid = OpenIndustry.modid, version = OpenIndustry.version)
 public class OpenIndustry {
 	public static final String modid = "OpenIndustry";
-	public static final String version = "InDev 0.9.0";
+	public static final String version = "InDev 0.9.1";
 
 	OpenIndustryWorldGen eventWorldGen = new OpenIndustryWorldGen();
 
@@ -157,6 +157,11 @@ public class OpenIndustry {
 				new Object[] { "PPP", "PIP", "PPP", 'P', itemBasePlate, 'I',
 						Items.iron_ingot });
 		// **************
+		// REACTANT FURNACE
+		// **************
+		GameRegistry.addRecipe(new ItemStack(machReactantFurnace_Idle),
+				new Object[] { "PRP", "PMP", "RRR", 'P', itemBasePlate, 'R',
+						itemReactiveIngot, 'M', machMachineFrame });
 
 		// ********************************************
 		// SMELTERY
@@ -166,14 +171,19 @@ public class OpenIndustry {
 		GameRegistry.addSmelting(oreReactiveOre, new ItemStack(
 				itemReactiveCluster), 5);
 		// **************
+		// ReactiveCluster --> ReactiveIngot
+		// **************
+		GameRegistry.addSmelting(itemReactiveCluster, new ItemStack(itemReactiveIngot), 25);
+		// **************
+		// **************
 		// CopperOre --> CopperIngot
 		// **************
 		GameRegistry.addSmelting(oreCopperOre, new ItemStack(itemCopperIngot),
-				5);
+				15);
 		// **************
 		// TinOre --> TinIngot
 		// **************
-		GameRegistry.addSmelting(oreTinOre, new ItemStack(itemTinIngot), 5);
+		GameRegistry.addSmelting(oreTinOre, new ItemStack(itemTinIngot), 15);
 		// **************
 	}
 
