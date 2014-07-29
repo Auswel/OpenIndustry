@@ -1,5 +1,5 @@
-OpenIndustry
-============
+![OpenIndustry](https://raw.githubusercontent.com/Auswel/auswel.github.io/master/images/modbanners/INDEV.png)
+====
 
 The OpenIndustry Minecraft mod official repository. 
 
